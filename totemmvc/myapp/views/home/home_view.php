@@ -70,7 +70,7 @@ It was developed internally to get up and running fast with our CMS Platform (Mo
 								Bootstrap
 							</li>
 							<li>
-								Jquery (preinstalled)
+								jQuery
 							</li>
 						</ul>	
 
