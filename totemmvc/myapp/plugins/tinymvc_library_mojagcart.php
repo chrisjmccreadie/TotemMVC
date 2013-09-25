@@ -198,5 +198,97 @@ class tinymvc_library_mojagcart extends mojagCache {
 	 {
 	 	return(0);
 	 }
+	 
+	 function fetchCollectionSlots($companyid)
+	 {
+	 	$time = date("d-m-y");
+
+		$url = "deliveryslots/?companyid=$companyid&time=$time";
+		$products = $this->fetchPage($url);
+		return($products);		 
+	 }
+	 
+	 function processCollectionSlots($slots,$starttime,$removepast = true)
+	 {
+	 	$time = time();
+		//echo $slots->starttime;
+		$sh =date('H:i',$starttime);
+		$nt =date('H:i',strtotime('+2 hours'));
+		$ct =date('d',strtotime('+2 hours'));
+		$sc =date('d');		
+		//get the time now to check it has not passed midnight
+		//echo $ct;
+		//echo $sc;
+		//exit;
+		if ($ct != $sc)
+		{
+			//echo 'in';
+		 return('');
+			
+		}
+		//echo $sh;
+		//echo $nt;
+		$now= 0;
+		$actviveslot = 0;
+		//echo $nt;
+		//print_r($slots);
+		foreach ($slots as $item) 
+			{
+				//exit;
+    			$at = date('H:i',$item->time);
+    			//echo $at.'<br/>';
+				//exit;
+     		   if ($at >= $nt)
+			   {
+			       //echo 'ddddd';
+				   //exit; 
+				  // $time = date('H:i',$a);
+				   //echo $at;
+				   //exit;
+					break;
+				}
+			   $actviveslot++;
+    		}
+			//print_r($slots);
+			//exit;
+			//echo $actviveslot;
+			//exit;
+	 	$i=0;
+	 	foreach($slots as $item)
+		{
+			//echo $item->Text;
+			//echo $item->Text.' '.$nt.'<br/>';
+			//state 0 = past
+			//state 1 = now
+			//state 2 = future
+			$lower = 1;
+			if ($i < $actviveslot)
+			{
+					$item->state = '0';
+					if ($removepast == true)
+						unset($slots[$i]);
+					
+			}
+			else {
+				if ($actviveslot == $i)
+					$item->state = '1';
+				else {
+					if ($i > $actviveslot)
+						$item->state = '2';
+						
+				}
+			}
+			
+
+			
+			$i++;
+		}
+		
+		//print_r($slots);
+		 return($slots);
+					exit;
+		
+	 }
+}
 	
 }

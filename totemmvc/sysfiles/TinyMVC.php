@@ -90,15 +90,10 @@ class tmvc
     /* set initial timer */
     self::timer('tmvc_app_start');
     
-    /* set path_info */
-  //  $this->path_info = !empty($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] :
-	 //   (!empty($_SERVER['ORIG_PATH_INFO']) ? $_SERVER['ORIG_PATH_INFO'] : '');
-	 
-	 //we arew using a redirect in the htaccess so just pick it up, clowny daggers you all.
-	  $this->path_info = $_SERVER['REDIRECT_URL'];
-//print_r(($_SERVER));
-//print_r( $this->path_info);
-//exit;
+   $this->path_info = !empty($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] :
+	  (!empty($_SERVER['ORIG_PATH_INFO']) ? $_SERVER['ORIG_PATH_INFO'] : '');
+	  
+
     /* internal error handling */
     $this->setupErrorHandling();
     

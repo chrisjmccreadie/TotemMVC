@@ -16,7 +16,9 @@ error_reporting(E_ALL);
 
 /* if the /myapp/ dir is not inside the /tinymvc/ dir, uncomment and set here */
 //define('TMVC_MYAPPDIR','/path/to/myapp/');
-
+$t = explode('index.php',$_SERVER['PHP_SELF']);
+//print_r($t);
+define('TMVC_ROOTURL',$t[0]);
 /* define to 0 if you want errors/exceptions handled externally */
 define('TMVC_ERROR_HANDLING',1);
 

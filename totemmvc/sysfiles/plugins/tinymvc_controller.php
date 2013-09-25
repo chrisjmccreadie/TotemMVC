@@ -60,9 +60,15 @@ class TinyMVC_Controller
 
   }
   
+   public function resourceurl()
+  {
+  	return('http://'.$_SERVER['HTTP_HOST'].TMVC_ROOTURL);
+  }
+  
+  
      public function baseurl()
   {
-  	return('http://'.$_SERVER['HTTP_HOST'].'/htdocs/');
+  	return('http://'.$_SERVER['HTTP_HOST'].'/');
   }
   
   
