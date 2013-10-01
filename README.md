@@ -1,7 +1,7 @@
 =======
 TotemMVC
 ========
-v0.01
+v0.02
 A modern framework based on TinyMVC with the Mojag Classes baked in.  Whats not to love.
 
 Usage
