@@ -9,5 +9,9 @@ Usage
 Put all your static files inside htdocs
 Put all your controlers inside totemmvc
 
-Enjoy the awesome
+Enjoy the awesome.
+
+http://www.mojag.co/
+http://www.mojagcart.com/
+http://www.totemsoftware.co.uk/
 
