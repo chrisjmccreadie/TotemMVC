@@ -26,10 +26,10 @@ if (use ==0)
 	hn = document.location.toString();
 	var url = hn.split("/");
 	//console.log(url);
-	mojagcartroot =  'http://'+url[2]+'/index.php/cart/';
+	mojagcartroot =  'http://'+url[2]+'/index.php/mojagcartajax/';
 }
 else
-	var mojagcartroot = 'http://www.mojagcart.com/cart/';
+	var mojagcartroot = 'http://www.mojagcart.com/mojagcartajax/';
 
 
 
