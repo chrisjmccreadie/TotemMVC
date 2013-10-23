@@ -4,16 +4,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="viewport" content="width=device-width" />
-<title>[TTITLE]</title>
-<link href="<?php echo $baseurl;?>css/style.css" type="text/css" rel="stylesheet"  />
-<script src="<?php echo $baseurl;?>js/jquery-1.9.1.js"></script>
+<title>Totem MVC</title>
+<link href="<?php echo $resourceurl;?>css/style.css" type="text/css" rel="stylesheet"  />
+<script src="<?php echo $resourceurl;?>js/jquery-1.9.1.js"></script>
 <!----- bootstrap css start ----->
-<link rel="stylesheet" href="<?php echo $baseurl;?>fonts.css" type="text/css" charset="utf-8" />
-<link href="<?php echo $baseurl;?>css/bootstrap.css" rel="stylesheet" type="text/css" />
-<link href="<?php echo $baseurl;?>css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="<?php echo $resourceurl;?>fonts.css" type="text/css" charset="utf-8" />
+<link href="<?php echo $resourceurl;?>css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $resourceurl;?>css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
 <!----- bootstrap css end ----->
 <!----- bootstrap js start ----->
 <!--<script type="text/javascript" src="js/jquery.js"></script>-->
-<script language="javascript" src="<?php echo $baseurl;?>js/bootstrap.js"></script>
+<script language="javascript" src="<?php echo $resourceurl;?>js/bootstrap.js"></script>
 <!----- bootstrap js end ----->
 </head>

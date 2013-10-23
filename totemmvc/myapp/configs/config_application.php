@@ -28,4 +28,10 @@ $config['error_handler_class'] = 'TinyMVC_ErrorHandler';
 /* enable timer. use {TMVC_TIMER} in your view to see it */
 $config['timer'] = true;
 
+/*
+ * Mojag Class specific settings.
+ */ 
+
+
+
 ?>

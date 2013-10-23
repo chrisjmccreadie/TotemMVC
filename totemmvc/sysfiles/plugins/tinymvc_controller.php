@@ -71,6 +71,66 @@ class TinyMVC_Controller
   	return('http://'.$_SERVER['HTTP_HOST'].'/');
   }
   
+  public function memoryused()
+  {
+  	return(memory_get_usage());
+  }
+  
+  public function addModal()
+  {
+  	
+  }
+  
+  public function addJs()
+  {
+  	
+  }
+  
+  public function addCss()
+  {
+  	
+  }
+  
+  public function compile($template,$headeroverride='',$footeroverride='')
+  {
+  	//check for header or footer overide.  this is useful as every now and again you do not want to use the defaults.
+  	if ($headeroverride != '')
+		$header = $headeroverride;
+	else {
+		$header = 'layout/header';
+	}
+  	if ($footeroverride != '')
+		$footer = $footeroverride;
+	else {
+		$footer = 'layout/footer';
+	}
+	
+  	//get the base url for use in your views.
+	$bu =  $this->baseurl();
+	//get the resource url for use in your views.
+	$ru =  $this->resourceurl(); 	
+	//get the memory used
+	$mu =  $this->memoryused(); 
+	//assign them to the view controller.
+	$this->view->assign('baseurl',$bu);
+	$this->view->assign('resourceurl',$ru);
+	$this->view->assign('memoryused',$mu);
+
+	//load the header
+	$output = $this->view->fetch($header);
+	//load the content templates
+	$output = $output.$this->view->fetch($template);
+	//load the footer
+	$output = $output.$this->view->fetch($footer);
+	//do any post processing here.
+
+
+	
+	//return the compiled template.
+	return($output);
+
+  }
+  
   
 }
 

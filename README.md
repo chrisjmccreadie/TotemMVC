@@ -4,6 +4,8 @@ TotemMVC
 
 A modern framework based on TinyMVC with the Mojag Classes baked in.  Whats not to love.
 
+Has the defualt controllers and views to create a shopping cart that fully intergrate with the Mojag Stack.
+
 Usage
 
 Put all your static files inside htdocs

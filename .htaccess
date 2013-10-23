@@ -1,15 +1,12 @@
 RewriteEngine On
+#speacl var DOES NOT WORK
+SetEnv SPECIAL_PATH /foo/bin
 
 # Map http://www.example.com to /jekyll.
-RewriteRule ^$ /htdocs/ [L]
+RewriteRule ^$  %{REQUEST_URI}/htdocs/ [L]
 
 # Map http://www.example.com/x to /jekyll/x unless there is a x in the web root.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !^/htdocs/
 RewriteRule ^(.*)$ /htdocs/index.php/$1
-
-# Add trailing slash to directories within jekyll
-# This does not expose the internal URL.
-#RewriteCond %{SCRIPT_FILENAME} -d
-#RewriteRule ^jekyll/(.*[^/])$ http://www.example.com/$1/ [R=301]

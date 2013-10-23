@@ -467,9 +467,7 @@ class tinymvc_library_mojagclass extends mojagCache
 	 function getStock($siteid)
 	 {
 		//This function get the objects which match the keywords.
-		
-		$url = "stock/?siteid=$siteid";
-
+		$url = "stock/?siteid=$siteid&fav=0";
 		$meta = $this->fetchPage($url);
 		//echo 'meta';
 		//print_r($meta);
