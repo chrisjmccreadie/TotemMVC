@@ -1,12 +1,5 @@
 <?php
 
-/***
- * Name:       TinyMVC
- * About:      An MVC application framework for PHP
- * Copyright:  (C) 2007, New Digital Group Inc.
- * Author:     Monte Ohrt, monte [at] ohrt [dot] com
- * License:    LGPL, see included license file  
- ***/
 
 /* PHP error reporting level, if different from default */
 error_reporting(E_ALL);

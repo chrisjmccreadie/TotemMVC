@@ -25,7 +25,7 @@
  * Using memcachier is very convient for many sites that do have write access to their files.  You can store the data in the cloud.
  * 
  */
- 
+ error_reporting(E_ALL);
  require_once('mojagCache.php');
  
 
@@ -47,6 +47,7 @@ class tinymvc_library_mojagcart extends mojagCache {
 	var $mojagkey = 'sk_live_UPiLp91D4NdbQKbQzwbSgPfz';
 	var $orderdesc = 'EA Burns order';
 	var $per = 7.4;
+	var $mcversion = "0.4";
 
    
     function __construct()
@@ -60,6 +61,11 @@ class tinymvc_library_mojagcart extends mojagCache {
 		}  
 	
 		
+	}
+	
+	function getVersion()
+	{
+		echo "Version:".$this->version;
 	}
 	
 	

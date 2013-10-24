@@ -17,4 +17,9 @@ $config['libraries'] = array("mojagcart","mojagclass");
 $config['scripts'] = array();
 
 
+/* auto-loaded configs */
+$config['configs'] = array('config_mojag')
+//include('config_mojag.php');
+
+
 ?>

@@ -141,6 +141,7 @@ class Cart_Controller extends TinyMVC_Controller
 			$i++;
 		}
 		//echo $total;
+		$total = number_format($total,2);
 		$fin['basket'] = array('total'=>$total,'numberofitems'=>$i);
 	
 	}
@@ -155,7 +156,7 @@ class Cart_Controller extends TinyMVC_Controller
    /*
     * get the basket items and return them.
     */
-   function getBasket()
+	function getBasket()
    {
    	session_start();
    	if (isset($_SESSION['items']))
@@ -166,24 +167,76 @@ class Cart_Controller extends TinyMVC_Controller
 		$total = 0;
 		$i=0;
 		//loop through the items and get the total
-		foreach($items as $item)
+		if (!empty($items))
 		{
-			//count the price
-			$total = $total+$item['price'];
-			$i++;
+			foreach($items as $item)
+			{
+				//print_r($item);
+				//count the price
+				 $ltotal=$item['price']*$item['quantity'];
+				$total = $total+$ltotal;
+			//	$total = $total+$item['price'];
+				$i++;
+			}
+			$total = number_format($total,2);
+			//echo $total;
+			$fin['basket'] = array('total'=>$total,'numberofitems'=>$i);
+			$fin['basketitems'] = $items;
 		}
-		//echo $total;
-		$fin['basket'] = array('total'=>$total,'numberofitems'=>$i);
-		$fin['basketitems'] = $items;
+		else {
+		$fin['basket'] = array('total'=>0.00,'numberofitems'=>0);
+		$fin['basketitems'] = '';		
+		}
 	
 	}
 	else
 	{
-		$fin = '';
+		$fin['basket'] = array('total'=>0.00,'numberofitems'=>0);
+		$fin['basketitems'] = '';
 	}		
 	echo json_encode($fin);   			
 
    }
+   
+   
+  //updat the quantity
+  function updateQuanityBasketItem()
+  {
+ 	session_start();
+  	 if (isset($_SESSION['items']))
+   		 $items = $_SESSION['items'];
+	
+		//add the items
+		$id = $_GET['id'];
+		$quantity = $_GET['quantity'];
+		$mcid = $_GET['mcid'];
+		$i=0;
+		$total=0;
+		foreach($items as $item)
+		{
+			if($mcid == $item['id'])
+			{
+				//print_r($items);
+				 $items[$i]['quantity'] = $quantity;
+	 			$_SESSION['items'] = $items;
+				$ltotal=$item['price']*$quantity;
+				///echo "ok";
+				//exit;					
+			}
+			else {
+				 $ltotal=$item['price']*$item['quantity'];
+			}
+			//$ltotal=$item['price']*$item['quantity'];
+			$total = $total+$ltotal;
+			//print_r($item);
+			//echo $total.'<br/>';		
+			$i++;	
+			//$i++;
+		} 
+				$total = number_format($total,2);	
+				$fin['basket'] = array('total'=>$total,'numberofitems'=>$i);
+		echo json_encode($fin);
+  }
 
    /*
     * get the basket total
@@ -210,6 +263,7 @@ class Cart_Controller extends TinyMVC_Controller
 			$i++;
 		}
 		//echo $total;
+		$total = number_format($total,2);
 		$fin['basket'] = array('total'=>$total,'numberofitems'=>$i);
 		//$fin['basketitems'] = $items;
 	
@@ -237,22 +291,50 @@ class Cart_Controller extends TinyMVC_Controller
     * total = total of all items
     * numberofitems = the number of items in the basket
    */ 
-  function addBasket()
+ function addBasket()
   {
   	session_start();
   	//blank the items var as its going to be used an an array later
      $items = '';
-	 //check if we have any items and set them
+	 $acheck = '';
+	 //check if we have any items and set the
+	// unset($_SESSION['items']);
      if (isset($_SESSION['items']))
+	 {
    		  $items = $_SESSION['items'];
+		  $acheck = $_SESSION['acheck'];	 	
+	 }
+
 	
 	//add the items
 	$name = $_GET['name'];
 	$price = $_GET['price'];
 	$slug = $_GET['slug'];
+	$id = $_GET['id'];
 	
+	$check = false;
+	if (is_array($acheck))
+	{
+		while ($check == false)
+		{
+			$iid = rand(0,10000);
+			if (in_array($iid, $acheck)) {
+	   			// echo "Got Irix";
+			}
+			else
+			{
+				$check = true;
+			}		
+		}		
+	}
+	else {
+		$iid = rand(0,10000);
+		$acheck[] = $iid;
+	}
+ 	$_SESSION['acheck'] = $acheck;	
+
 	//make an array
-	$item = array('name'=>$name,'price'=>$price,'slug'=>$slug,'quantity'=>1);
+	$item = array('id'=>$iid,'mcid'=>$id,'name'=>$name,'price'=>$price,'slug'=>$slug,'quantity'=>1);
 	//add it to the array
 	$items[] = $item;
 	//store it in the session
@@ -266,6 +348,7 @@ class Cart_Controller extends TinyMVC_Controller
 		$i++;
 	}
 	//set the basket items
+	$total = number_format($total,2);
 	$fin['basket'] = array('total'=>$total,'numberofitems'=>$i);
 	$fin['basketitems'] = $items;
 	//return it
@@ -289,6 +372,49 @@ class Cart_Controller extends TinyMVC_Controller
   {
   	session_start();
   	print_r($_SESSION);
+  }
+  
+  
+    //remove the item from the basket
+  function removeBasketItem()
+  {
+  	
+	session_start();
+  	 if (isset($_SESSION['items']))
+   		 $items = $_SESSION['items'];
+	
+	$sesitems='';
+	//unset($_SESSION['items']);
+		//add the items
+		$id = $_GET['id'];
+				$mcid = $_GET['mcid'];
+				$quantity = $_GET['quantity'];
+		$i=0;
+				$total=0;
+				$ltotal= 0;
+				$removed = 1;
+		foreach($items as $item)
+		{
+			//echo $i.'ddd '.$id;
+			if(($mcid == $item['id']) && ($quantity == $item['quantity']))
+			{
+
+
+	
+			}
+			else {
+				$sesitems[] = $item;
+				$ltotal=$item['price']*$item['quantity'];
+				$total = $total+$ltotal;	
+			}
+	
+			$i++;	
+			//$i++;
+		}
+		$_SESSION['items'] = $sesitems;
+		$total = number_format($total,2);
+		$fin['basket'] = array('total'=>$total,'numberofitems'=>$i-1);
+		echo json_encode($fin);
   }
   
 

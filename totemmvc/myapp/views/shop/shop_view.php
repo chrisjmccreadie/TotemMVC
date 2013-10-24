@@ -63,49 +63,68 @@
 <div class="row-fluid">
   <div class="container">
     <div class="span12">
-		<div class="well">
+    	<div class="well">
+    		A simple example that shows all the products being displayed.</br>
+    		Points to note:</br>
+    		We are using the Mojag Image API to render control the size and quality of the images</br>
+    		We are using Mojag Cache to cache all the products</br>
+    		excution time: {TMVC_TIMER} </br>
+			Number of Products Renderded : <?php echo count($products);?>
+    		
+    	</div>
+    	<?php
+    		echo $mc_shopping_basket;
+    	?>
+    			<ul class="thumbnails">
 
-			Welcome, thankyou for taking a look at TotemMVC.
+    	<?php
+    	
+    	foreach ($products as $product)
+		{
+		?>
+			  <li class="span3">
+		<div class="product">
+		<div class="productimage">
+
+				<?php
+					$images = $product->images;
+					if(is_array($images))
+					{
+				?>
+				<img src="
+				<?php 
+				echo $images[0]->cdnurl;
+				?>/convert?h=100&w=100&fit=max&quality=50" />
+				
+				<?php
+					}
+				?>
+				
+			</div>
+			<div class="productname">
+				<?php 
+				//print_r($product);
+				//exit;
+				echo $product->product->name;
+				?>
+			</div>
+			<div class="productprice">
+				<?php echo $product->product->price;?>
+			</div>
+			
+
+			
+			
+			<a href='#' class="mojagadditem btn btn-large"  mc-name="<?php echo $product->product->name;?>" mc-id="<?php echo $product->product->id;?>" mc-slug="<?php echo $product->product->slug;?>" mc-price="<?php echo $product->product->price;?>" mc-option="">Buy</a>
 		</div>
-		<div class="span10">
-			<p>
-
-			TotemMVC is a lightweight MVC based on the original work of TinyMVC.
-			</p>
-			<p>
-It was developed internally to get up and running fast with our CMS Platform (Mojag).  It does a lot of the bootstrapping for you such removing the index.php in you ht access file or making sure your assets are all in a static directory.  Some of the things we do are obvious and none of it hard it's just, well damn convenient to have a modern framework that has all the resources you need to get up and running with 0 effort (we like 0 effort at Totem).
-
-It has the all of the classes for Mojag, Mojagcart and our cache engine built. It also supports Sendmail (for email) and Memcachier (distrubuted Memcache) stripe and paypal (payment gateways) and has a very lightweight templating engine.
-				</p>
-				<p>
-					it is not for everyone but if it's for you enjoy.
-				</p>
-				<p>
-				Lastly TotemMVC could not exist with the work of these fine people
-						</p>
-						<ul>
-							<li>
-								TinyMVC
-							</li>
-							<li>
-								Bolierplate
-							</li>
-							<li>
-								Bootstrap
-							</li>
-							<li>
-								jQuery
-							</li>
-						</ul>	
-						<h2>Someuseful information</h2>
-						Your base url is set to :<?php echo $baseurl;?>
-				<br>
-				and your resoruce url is : <?php echo $resourceurl;?>
-				<br>
-				Memory Used: <?php echo $memoryused;?>
-				<br>
-				excution time: {TMVC_TIMER} 
-
+		</li>
+			
+		<?php
+		}
+		?>
+		</ul>
+</div>
+</div>
 		</div>
     </div>
   </div>

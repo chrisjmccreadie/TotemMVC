@@ -109,6 +109,8 @@ class TinyMVC_Controller
 	$bu =  $this->baseurl();
 	//get the resource url for use in your views.
 	$ru =  $this->resourceurl(); 	
+	//echo "$ru";
+	//exit;
 	//get the memory used
 	$mu =  $this->memoryused(); 
 	//assign them to the view controller.

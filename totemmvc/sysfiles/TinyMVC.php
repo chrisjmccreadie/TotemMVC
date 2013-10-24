@@ -99,6 +99,7 @@ class tmvc
     
     /* include application config */
     include('config_application.php');
+    include('config_mojag.php');
     $this->config = $config;
 
     /* url remapping/routing */    
@@ -256,6 +257,11 @@ class tmvc
     {
       foreach($config['models'] as $model)
         $this->controller->load->model($model);
+    }
+    if(!empty($config['configs']))
+    {
+      foreach($config['configs'] as $config)
+        $this->controller->load->configs($config);
     }
   }
 

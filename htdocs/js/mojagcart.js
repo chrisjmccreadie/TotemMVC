@@ -14,6 +14,7 @@ var testkey = 'pk_test_t9wTwx0pmLYyOvBBSda2dZI8';
 var uselive = 0; //set 1 for live 0 for test
 var stripeaddress = false;
 var stripecurrency = 'gbp';
+var currencysymbol = '&pound;';
 var stripename = 'E.A.Burns Order';
 var stripedesc = 'Please enter your credit/debit card details';
 var currenttotal = 0;
@@ -23,13 +24,12 @@ var currenttotal = 0;
 //set the local url
 if (use ==0) 
 {
-	hn = document.location.toString();
-	var url = hn.split("/");
+
 	//console.log(url);
-	mojagcartroot =  'http://'+url[2]+'/index.php/mojagcartajax/';
+	mojagcartroot =  '/cart/';
 }
 else
-	var mojagcartroot = 'http://www.mojagcart.com/mojagcartajax/';
+	var mojagcartroot = 'http://www.mojagcart.com/cart/';
 
 
 
@@ -40,16 +40,18 @@ $(document).ready(function(){
 
 		
 	  //add to basket
-	  $('.mojagadditem').click(function(){
+$('.mojagadditem').click(function(){
 	  	//get the details
 	  	var name = $(this).attr('mc-name');
 	  	name = encodeURIComponent(name);
 	  	var slug = $(this).attr('mc-slug');
 	  	var price = $(this).attr('mc-price');
+	  	var id = $(this).attr('mc-id');
+	
 	  	price = encodeURIComponent(price);
-	  	//alert('ddd');
+	  //	alert(id);
 		//built the url
-		var ajaxurl = mojagcartroot+"addBasket?name="+name+'&slug='+slug+'&price='+price;
+		var ajaxurl = mojagcartroot+"addBasket?name="+name+'&slug='+slug+'&price='+price+'&id='+id;
 		ajaxcall = 'addbasket';
 		fetchsc(ajaxurl);	
 	  	//alert('yay');	
@@ -114,20 +116,7 @@ $(document).ready(function(){
 		}
 	});
 	
-	//increase the quanity
-	$(".mojagcartaddquantity" ).on( "click",  function() {
-				alert('lineitemid');
 
-		var lineitemid = $(this).attr('data-id');
-				alert(lineitemid);
-
-	});
-	
-	$(".mojagcartminusquantity" ).on( "click",  function() {
-		var lineitemid = $(this).attr('data-id');
-		alert(lineitemid);
-	});
-	
 	function checkEmail(email) {
 		var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 		if (!filter.test(email)) {
@@ -135,6 +124,11 @@ $(document).ready(function(){
 		}
 		return(true);
 	}
+	
+	
+	$('#mc-checkoutbutton').click(function(event){
+		alert('check out process');
+	})
 	
 	//function add address
 	$('#addaddress').click(function(event){
@@ -626,62 +620,65 @@ $(document).ready(function(){
 		    
 });
 
-function addQuan(id)
+function addQuan(id,mcid)
 {
 	var quantity = $('#lineitemquantity'+id).text();
 	//alert(quantity);
 	quantity++;
-	//get the cost
-	var price = $('#cartlineitemprice'+id).attr('data-price');
-			//alert(price);
-	currenttotal = parseFloat(currenttotal) + parseFloat(price);
-	price = parseFloat(price) * parseInt(quantity);
-			//alert(price);
-	$('#basketTotal > h5 > .item-price').html('&pound; '+currenttotal);
-	$('#cartlineitemprice'+id).text(price.toFixed(2));
-
-	//alert(quantity);
 	$('#lineitemquantity'+id).text(quantity);
 	$('#lineitemquantity'+id).attr('data-id',quantity);
+	var ajaxurl = mojagcartroot+"updateQuanityBasketItem?id="+id+'&quantity='+quantity+"&mcid="+mcid;
+	ajaxcall = 'updatequantity';
+	//alert(ajaxurl);
+	fetchsc(ajaxurl);
 
 }
 
-function removeQuan(id)
+function removeQuan(id,mcid)
 {
-	//alert(id);
-	var quantity = $('#lineitemquantity'+id).attr('data-id');
+	//alert(mcid);
+	var quantity = $('#lineitemquantity'+id).text();
 	if (quantity > 1)
 	{
 		quantity--;
 		var price = $('#cartlineitemprice'+id).attr('data-price');
-		currenttotal = parseFloat(currenttotal) - parseFloat(price);
-		price = parseFloat(price) * parseInt(quantity);
-		$('#basketTotal > h5 > .item-price').html('&pound; '+currenttotal);
-		$('#cartlineitemprice'+id).text(price.toFixed(2));
+		//currenttotal = parseFloat(quantity) - parseFloat(price);
+		//price = parseFloat(price) * parseInt(quantity);
+		//$('.item-price').html('&pound; '+price);
+	//	$('#cartlineitemprice'+id).text(price.toFixed(2));
 		$('#lineitemquantity'+id).text(quantity);
 		$('#lineitemquantity'+id).attr('data-id',quantity);
+		var ajaxurl = mojagcartroot+"updateQuanityBasketItem?id="+id+'&quantity='+quantity+"&mcid="+mcid;
+		ajaxcall = 'updatequantity';
+		//alert(ajaxurl);
+		fetchsc(ajaxurl);	
 	}
 	else
 	{	
-		var price = $('#cartlineitemprice'+id).attr('data-price');
-		currenttotal = parseFloat(currenttotal) - parseFloat(price);
-		$('#basketTotal > h5 > .item-price').html('&pound; '+currenttotal);
+		//var price = $('#cartlineitemprice'+id).attr('data-price');
+		//currenttotal = parseFloat(quantity) - parseFloat(price);
+		//$('.item-price').html('&pound; '+0);
 		//remove item
 		//alert('dddd');
 		$('#liid'+id).remove();
-		var totalitems = $('#mojagbasketcount').text();
-		totalitems--;
-		$('#mojagbasketcount').text(totalitems);
+		//var totalitems = $('#mojagbasketcount').text();
+		//totalitems--;
+		//$('#mojagbasketcount').text(totalitems);
+		var ajaxurl = mojagcartroot+"removeBasketItem?id="+id+"&mcid="+mcid+'&quantity='+quantity;
+		ajaxcall = 'removebasket';
+		//alert(ajaxurl);
+		fetchsc(ajaxurl);	
+		//fetchsc(ajaxurl);	
 		return;
 		
 	}
 
 
 }
-
 //getBasket
 function getBasket()
 {
+	 console.log('in basket'+mojagcartroot);
 	  var ajaxurl = mojagcartroot+"getBasket";
 	  ajaxcall='getbasket';
 	  fetchsc(ajaxurl);	
@@ -709,40 +706,34 @@ function emptyBasket()
 
 function processBasketTotal(total)
 {
-	//alert('ddd');
 	var result = $.parseJSON(total);
 	console.log(result);
 	if (result == "") {
-		$('#mojagbasketcount').html(0);
+		$('#mc-basketcount').html(0);
 		currenttotal = 0.00;
-		$('#basketTotal > h5 > .item-price').html('&pound; '+currenttotal);	
+		$('#mc-baskettotal').html(currencysymbol+currenttotal);	
 	}
-	else
-	{
-		//$('mojagcartbuy').attr('mc-name','').attr('mc-slug','').attr('mc-price','');
-		currenttotal = parseFloat(result.basket.total).toFixed(2);
-		//alert(currenttotal);
-		//set this to the total div you want.
-		$('#basketTotal > h5 > .item-price').html('&pound; '+currenttotal);		
-	}
-	ctotal = result.basket.total;
-	$('#ctotal').html(ctotal.toFixed(2));
+
+	$('#mc-baskettotal').html(currencysymbol+result.basket.total);
+	$('#mc-basketcount').html(result.basket.numberofitems);	
 }
 
 function processBasket(basketitems)
 {
+	///alert(baskettotal+currenttotal);
 	//process the basket
-	//console.log(basketitems);
+	console.log(basketitems);
 	var result = $.parseJSON(basketitems);
 	//console.log(result);
 	if (result == "") {
-		$('#mojagbasketcount').html(0);
-		currenttotal = 0.00;
-		$('#basketTotal > h5 > .item-price').html('&pound; '+currenttotal);	
+		$('#mc-basketcount').html(0);
+		currenttotal = "0.00";
+		$('#mc-baskettotal').html(currencysymbol+currenttotal);	
 	}
 	else
 	{
-		$('#mojagbasketcount').html(result.basket.numberofitems);
+		$('#mc-basketcount').html(result.basket.numberofitems);
+		$('#mc-baskettotal').html(currencysymbol+result.basket.total);
 		mojagbasketitems ="<ul>";
 	
 		i = 0;
@@ -750,24 +741,19 @@ function processBasket(basketitems)
 		$.each(result.basketitems, function(i, item) {
 			mojagbasketitems=mojagbasketitems+'<li id="liid'+i+'"><div>';
 			mojagbasketitems=mojagbasketitems+'<span id="cartlineitemname'+i+'" class="item-title">'+item.name+'</span>';
-			mojagbasketitems=mojagbasketitems+'<a class="mojagcartaddquantity item-quant" href="javascript:addQuan('+i+')" data-id="'+i+'">+</a><br/></a>';
+			mojagbasketitems=mojagbasketitems+'<a class="mojagcartaddquantity item-quant" href="javascript:addQuan('+i+','+item.id+')" data-id="'+i+'">+</a><br/></a>';
 			mojagbasketitems=mojagbasketitems+'<span id="lineitemquantity'+i+'" class="item-quant">'+item.quantity+"</span>";
-			mojagbasketitems=mojagbasketitems+'<a class="mojagcartminusquantity item-quant" href="javascript:removeQuan('+i+')" data-id="'+i+'">-</a>';
+			mojagbasketitems=mojagbasketitems+'<a class="mojagcartminusquantity item-quant" href="javascript:removeQuan('+i+','+item.id+')" data-id="'+i+'">-</a>';
 			mojagbasketitems=mojagbasketitems+'<span id="cartlineitemprice'+i+'" data-price="'+item.price+'" class="item-price"> '+'&pound;'+parseFloat(item.price).toFixed(2)+'</span>';
 			mojagbasketitems=mojagbasketitems+'</div></li>';
 			i++;
 			currenttotal = parseFloat(currenttotal) + parseFloat(item.price);
-			//console.log(currenttotal);
-	 		//console.log(item);
-		}); //<-- lacking ")"
+		}); 
 		mojagbasketitems=mojagbasketitems+'</ul>';
-		$('#mojagbasketitems').html(mojagbasketitems);
+		$('#mc-basketitems').html(mojagbasketitems);
 	}
-	$('mojagcartbuy').attr('mc-name','').attr('mc-slug','').attr('mc-price','');
-	currenttotal = parseFloat(currenttotal).toFixed(2);
-	$('#basketTotal > h5 > .item-price').html('&pound; '+currenttotal);
-	//console.log(currenttotal);	
-	$('#productPage').modal('hide');
+
+
 }
 
 
@@ -849,8 +835,11 @@ function fetchsc(url)
 		//if (ajaxcall == 'paybasket')
 			//takePayment(result);	
 		if (ajaxcall == 'getbaskettotal')
+			processBasketTotal(result);
+		if (ajaxcall == 'updatequantity')
 			processBasketTotal(result);	
-
+		if (ajaxcall == 'removebasket')
+			processBasket(result);	
 			
 	})
   	.error(function(result) { 

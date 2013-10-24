@@ -153,6 +153,7 @@ class TinyMVC_Load
     static $dbs = array();
     /* load config information */
     include('config_database.php');
+
     if(!$poolname) 
       $poolname=isset($config['default_pool']) ? $config['default_pool'] : 'default';
     if ($poolname && isset($dbs[$poolname]))
@@ -166,7 +167,14 @@ class TinyMVC_Load
       $dbs[$poolname] = new $config[$poolname]['plugin']($config[$poolname]);
       return $dbs[$poolname];
      }
-  }  
+  }
+  
+  public function configs($config)
+  {
+
+  }
+  
+ 
   
 }
 
