@@ -9,8 +9,3 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !^/htdocs/
 RewriteRule ^(.*)$ /htdocs/index.php/$1
-
-# Add trailing slash to directories within jekyll
-# This does not expose the internal URL.
-#RewriteCond %{SCRIPT_FILENAME} -d
-#RewriteRule ^jekyll/(.*[^/])$ http://www.example.com/$1/ [R=301]

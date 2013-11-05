@@ -24,12 +24,18 @@ class Shop_Controller extends TinyMVC_Controller
 	$products = $this->mojagcart->fetchProducts($tmvc->config['companyid']);
 	//load the shop model.
 	$this->load->model('Shop_Model','shop');
-
+	//echo "ddd".$tmvc->config['ru'];
+	$this->view->assign('resourceurl',$tmvc->config['ru']);
+	//exit;
+	//echo $tmvc->resourceurl(); 
 	//assing the products to a view.
 	$this->view->assign('products',$products);
 	//get the cart parts
 	$basket = $this->view->fetch('parts/mc_shopping_basket');
-	$this->view->assign('mc_shopping_basket',$basket);	
+	//get the chose payment modal
+	$choosepayment = $this->view->fetch('parts/mc_choosepayment_modal');
+	$this->view->assign('mc_shopping_basket',$basket);
+	$this->view->assign('mc_choosepayment_modal',$choosepayment);	
 	$template = $this->compile('shop/shop_view');
 	echo $template;
   }

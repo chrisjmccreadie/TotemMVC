@@ -15,11 +15,13 @@ var uselive = 0; //set 1 for live 0 for test
 var stripeaddress = false;
 var stripecurrency = 'gbp';
 var currencysymbol = '&pound;';
-var stripename = 'E.A.Burns Order';
+var stripename = 'Totem MVC Order';
 var stripedesc = 'Please enter your credit/debit card details';
 var currenttotal = 0;
-
-
+var basketotal = 0;
+//0 = paypal 1 = stipe
+var payby = 0;
+var currency = 'gbp';
 
 //set the local url
 if (use ==0) 
@@ -31,6 +33,37 @@ if (use ==0)
 else
 	var mojagcartroot = 'http://www.mojagcart.com/cart/';
 
+
+$('#stripemakepayment').click(function() {
+   
+
+		//test 
+		//pk_test_aVXccYye8uoCBaeQwcHJHbBX
+		//live
+		//pk_live_zm5KXzirbW1Y6EuRwzymx0F8
+		var token = function(res){
+        var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+        $('#formstripe').append($input).submit();
+      };
+      t = currenttotal * 100;
+    //  var t = $('#ttotal').val();
+      			//t = t *100;
+			//alert(dtotal);
+			//get shipping cost
+			t = parseFloat(t).toFixed(2);
+      StripeCheckout.open({
+        key:         'pk_test_hTT4QN9MECtYY5GwyF0tHwPG',
+        address:     false,
+        amount:    t,
+        currency:    currency,
+        name:        stripename,
+        description: stripedesc,
+        panelLabel:  'Checkout',
+        token:       token
+      });
+
+
+  	});    	
 
 
 $(document).ready(function(){
@@ -124,10 +157,82 @@ $('.mojagadditem').click(function(){
 		}
 		return(true);
 	}
+
+	$('.mc-payment-btn').click(function(event){
+		//alert('in');
+		$('#shippingaddress').addClass('hide');
+		$('#mc-billingaddress').addClass('hide');
+		$('#mc-choosepaymenttype4').removeClass('hide');	
+		$('#mc-choosepaymenttype3').addClass('hide');
+		//alert($('#mc-baskettotal').text());
+		$('.mc-confirmamount').text($('#mc-baskettotal').text());
+		if (payby == 0)
+			$('#mc-paypalconfirmation').removeClass('hide');	
+		if (payby == 1)
+			$('#mc-ccconfirmation').removeClass('hide');	
+	});
 	
+	$('#mc-deliveryaddress-btn').click(function(event){
 	
+		$('.mc-payment-btn').removeClass('hide');	
+		$('#shippingaddress').addClass('hide');
+		$('#mc-billingaddress').removeClass('hide');
+		$('#mc-choosepaymenttype2').addClass('hide');
+		$('#mc-choosepaymenttype1').addClass('hide');	
+		$('#mc-choosepaymenttype3').removeClass('hide');		
+	});
+	
+		
+	$('#mc-matchaddress').click(function(event){
+		if ($('#mc-matchaddress').is(':checked')) 
+		{
+    		$('#mc-deliveryaddress-btn').addClass('hide');
+			$('.mc-payment-btn').removeClass('hide');
+		}
+		else 
+		{
+    		$('#mc-deliveryaddress-btn').removeClass('hide');
+			$('.mc-payment-btn').addClass('hide');
+		} 
+
+	});
+	
+
+	
+	$('#mc-pay-paypal').click(function(event){
+		$('#mc-choosepaymenttype1').addClass('hide');
+		$('#mc-billingaddress').addClass('hide');		
+		
+		$('#mc-choosepaymenttype2').removeClass('hide');	
+		$('#paymenttypes').addClass('hide');
+		$('#shippingaddress').removeClass('hide');
+		payby =0;
+	});
+	
+	$('#mc-pay-cc').click(function(event){
+		$('#mc-choosepaymenttype1').addClass('hide');
+		$('#mc-billingaddress').addClass('hide');		
+		$('#mc-choosepaymenttype2').removeClass('hide');	
+		$('#paymenttypes').addClass('hide');
+		$('#shippingaddress').removeClass('hide');
+			payby =1;
+	});
+		
 	$('#mc-checkoutbutton').click(function(event){
-		alert('check out process');
+		//alert('check out process');
+		
+		$('#mc-paypalconfirmation').addClass('hide');	
+
+		$('#mc-billingaddress').addClass('hide');
+		$('#shippingaddress').addClass('hide');
+		$('#paymenttypes').removeClass('hide');
+		$('#mc-choosepaymenttype4').addClass('hide');	
+		$('#mc-choosepaymenttype3').addClass('hide');
+		$('#mc-choosepaymenttype2').addClass('hide');
+		$('#mc-choosepaymenttype1').removeClass('hide');				
+		//check the total and display the modal
+		if (basketotal != 0)
+			$('#mc_choosepayment_modal').modal('toggle');
 	})
 	
 	//function add address
@@ -713,7 +818,7 @@ function processBasketTotal(total)
 		currenttotal = 0.00;
 		$('#mc-baskettotal').html(currencysymbol+currenttotal);	
 	}
-
+	basketotal = result.basket.total;
 	$('#mc-baskettotal').html(currencysymbol+result.basket.total);
 	$('#mc-basketcount').html(result.basket.numberofitems);	
 }
@@ -728,12 +833,14 @@ function processBasket(basketitems)
 	if (result == "") {
 		$('#mc-basketcount').html(0);
 		currenttotal = "0.00";
+		basketotal = 0;
 		$('#mc-baskettotal').html(currencysymbol+currenttotal);	
 	}
 	else
 	{
 		$('#mc-basketcount').html(result.basket.numberofitems);
 		$('#mc-baskettotal').html(currencysymbol+result.basket.total);
+		basketotal = result.basket.total;
 		mojagbasketitems ="<ul>";
 	
 		i = 0;

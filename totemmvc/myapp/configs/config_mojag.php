@@ -17,8 +17,8 @@ $config['mojagurl'] = 'http://mojag.co/rest/rest';
 $config['companyid'] = 11; //the mojag company id
 $config['siteid'] = 401; //the mojag site id
 $config['customeremail'] = ''; //the email that we use to send form submission etc to.
-$config['exchangerateus'] = '1.62' // the exchange rate to apply 
-
+$config['exchangerateus'] = '1.62'; // the exchange rate to apply 
+$config['ru'] = 'http://'.$_SERVER['HTTP_HOST'].TMVC_ROOTURL;
 /*set the stripe details*/
 
 

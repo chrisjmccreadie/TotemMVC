@@ -12,6 +12,7 @@
 <link href="<?php echo $resourceurl;?>css/bootstrap.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo $resourceurl;?>css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo $resourceurl;?>css/mojagcart.css" rel="stylesheet" type="text/css" />
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" rel="stylesheet">
 <!----- bootstrap css end ----->
 <!----- bootstrap js start ----->
 <!--<script type="text/javascript" src="js/jquery.js"></script>-->

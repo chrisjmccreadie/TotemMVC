@@ -74,7 +74,10 @@
     	</div>
     	<?php
     		echo $mc_shopping_basket;
+			//modals
+			echo $mc_choosepayment_modal;
     	?>
+    	
     			<ul class="thumbnails">
 
     	<?php
