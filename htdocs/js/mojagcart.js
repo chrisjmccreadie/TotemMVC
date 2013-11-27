@@ -28,7 +28,7 @@ if (use ==0)
 {
 
 	//console.log(url);
-	mojagcartroot =  '/cart/';
+	mojagcartroot =  'cart/';
 }
 else
 	var mojagcartroot = 'http://www.mojagcart.com/cart/';

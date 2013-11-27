@@ -2,6 +2,7 @@
 <div id="mc_choosepayment_modal" class="modal hide fade">
     <!-- dialog contents -->
       <div class="modal-header">
+      	<div class="shoprocketLogo"><a href="http://shoprocket.co/" target="_blank" id="ShoprocketLogo"><img  src="<?php echo $resourceurl;?>/images/shoprocket.png"/></a></div>
         <button type="button" class="close" data-dismiss="modal">×</button>
       	<h3 id="mc-choosepaymenttype1">Choose Payment Type</h3>
       	<h3 id="mc-choosepaymenttype2" class="hide">Add Shipping Address</h3>
@@ -10,7 +11,7 @@
       </div>
     <div class="modal-body">
     	<div id="paymenttypes">
-	    	<a href="#" id="mc-pay-paypal"><img  src="<?php echo $resourceurl;?>/images/paypal.jpg"/></a>
+	    	<a href="#" id="mc-pay-paypal"><img  src="<?php echo $resourceurl;?>/images/paypal.png"/></a>
 	    	<a href="#" id="mc-pay-cc"><img src="<?php echo $resourceurl;?>/images/cc.png" width="250" height="250"/></a>
     	</div>
     	<div id="shippingaddress" class="hide">
