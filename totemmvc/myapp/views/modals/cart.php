@@ -19,5 +19,6 @@
 	}
 	?>
 	
-		<p class="item_price"><span class="item">(<span id='stockcount'><?php echo $totals['itemcount'];?></span>) ITEMS</span> <span class="price">£<span  id='cartprice'><?php echo $totals['total'];?></span></span></p>
+		<p class="item_price"><span class="item">(<span id='stockcount'><?php echo $totals['itemcount'];?></span>) ITEMS</span> 
+			<span class="price">£<span  id='cartprice'><?php echo $totals['total'];?></span></span></p>
 </div>
