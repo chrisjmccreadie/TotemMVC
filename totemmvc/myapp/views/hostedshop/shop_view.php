@@ -83,6 +83,20 @@
 		</div>
 
 </div>
+<div class="product">
+		<div class="productimage">
+			<img src="http://d1y7fugidfyvfy.cloudfront.net/api/file/E4E6y6jJQvaDPOKY27u3/convert?h=100&amp;w=100&amp;fit=max&amp;quality=50">
+		</div>
+		<div class="productname">
+			Medium Triangle Pendant		2	
+		</div>
+		<div class="productprice">
+				180.00	
+		</div>
+			<a href="#" class="sr-additem btn btn-large" sr-name="Medium Triangle Pendant1" sr-id="161" sr-slug="anytext" sr-price="40.00" sr-option="">Buy</a>
+		</div>
+
+</div>
 </div>
 		</div>
     </div>
@@ -107,3 +121,5 @@
 <input type="hidden" name="sr-checkstock" id="sr-checkstock" value="0">
 <!-- Out of stock message. -->
 <input type="hidden" name="sr-outofstockmessage" id="sr-outofstockmessage" value="We are sorry to say we are out of stock.">
+<!-- if we are going to log stats or not default = 1 -->
+<input type="hidden" name="sr-stats" id="sr-stats" value="1">

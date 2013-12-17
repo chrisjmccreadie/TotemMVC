@@ -15,9 +15,8 @@
 <!----- bootstrap js start ----->
 <!--<script type="text/javascript" src="js/jquery.js"></script>-->
 <script language="javascript" src="<?php echo $resourceurl;?>js/bootstrap.js"></script>
-<script language="javascript" src="<?php echo $resourceurl;?>js/hosted/shoprocket.js"></script>
 
-<script language="javascript" src="http://shoprocket:8888/static/frontend/js/sr.js"></script>
+
 
 <!----- bootstrap js end ----->
 </head>
