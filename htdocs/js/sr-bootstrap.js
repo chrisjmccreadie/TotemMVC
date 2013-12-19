@@ -110,7 +110,7 @@
 
     if (e.isDefaultPrevented()) return
 
-    $parent.removeClass('in')
+    $parent.removeClass('sr-in')
 
     function removeElement() {
       $parent
@@ -118,7 +118,7 @@
         .remove()
     }
 
-    $.support.transition && $parent.hasClass('fade') ?
+    $.support.transition && $parent.hasClass('sr-fade') ?
       $parent.on($.support.transition.end, removeElement) :
       removeElement()
   }
@@ -501,7 +501,7 @@
 
       dimension = this.dimension()
       scroll = $.camelCase(['scroll', dimension].join('-'))
-      actives = this.$parent && this.$parent.find('> .accordion-group > .in')
+      actives = this.$parent && this.$parent.find('> .accordion-group > .sr-in')
 
       if (actives && actives.length) {
         hasData = actives.data('collapse')
@@ -551,7 +551,7 @@
 
       this.transitioning = 1
 
-      this.$element[method]('in')
+      this.$element[method]('sr-in')
 
       $.support.transition && this.$element.hasClass('collapse') ?
         this.$element.one($.support.transition.end, complete) :
@@ -559,7 +559,7 @@
     }
 
   , toggle: function () {
-      this[this.$element.hasClass('in') ? 'hide' : 'show']()
+      this[this.$element.hasClass('sr-in') ? 'hide' : 'show']()
     }
 
   }
@@ -605,7 +605,7 @@
         || e.preventDefault()
         || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') //strip for ie7
       , option = $(target).data('collapse') ? 'toggle' : $this.data()
-    $this[$(target).hasClass('in') ? 'addClass' : 'removeClass']('collapsed')
+    $this[$(target).hasClass('sr-in') ? 'addClass' : 'removeClass']('collapsed')
     $(target).collapse(option)
   })
 
@@ -770,8 +770,8 @@
     .on('keydown.dropdown.data-api touchstart.dropdown.data-api', toggle + ', [role=menu]' , Dropdown.prototype.keydown)
 
 }(window.jQuery);/* =========================================================
- * bootstrap-modal.js v2.2.2
- * http://twitter.github.com/bootstrap/javascript.html#modals
+ * bootstrap-SRmodal.js v2.2.2
+ * http://twitter.github.com/bootstrap/javascript.html#SRmodals
  * =========================================================
  * Copyright 2012 Twitter, Inc.
  *
@@ -797,16 +797,16 @@
  /* MODAL CLASS DEFINITION
   * ====================== */
 
-  var Modal = function (element, options) {
+  var SRModal = function (element, options) {
     this.options = options
     this.$element = $(element)
-      .delegate('[data-dismiss="modal"]', 'click.dismiss.modal', $.proxy(this.hide, this))
-    this.options.remote && this.$element.find('.modal-body').load(this.options.remote)
+      .delegate('[data-dismiss="SRmodal"]', 'click.dismiss.SRmodal', $.proxy(this.hide, this))
+    this.options.remote && this.$element.find('.SRmodal-body').load(this.options.remote)
   }
 
-  Modal.prototype = {
+  SRModal.prototype = {
 
-      constructor: Modal
+      constructor: SRModal
 
     , toggle: function () {
         return this[!this.isShown ? 'show' : 'hide']()
@@ -825,10 +825,10 @@
         this.escape()
 
         this.backdrop(function () {
-          var transition = $.support.transition && that.$element.hasClass('fade')
+          var transition = $.support.transition && that.$element.hasClass('sr-fade')
 
           if (!that.$element.parent().length) {
-            that.$element.appendTo(document.body) //don't move modals dom position
+            that.$element.appendTo(document.body) //don't move SRmodals dom position
           }
 
           that.$element
@@ -839,7 +839,7 @@
           }
 
           that.$element
-            .addClass('in')
+            .addClass('sr-in')
             .attr('aria-hidden', false)
 
           that.enforceFocus()
@@ -866,20 +866,20 @@
 
         this.escape()
 
-        $(document).off('focusin.modal')
+        $(document).off('focusin.SRmodal')
 
         this.$element
-          .removeClass('in')
+          .removeClass('sr-in')
           .attr('aria-hidden', true)
 
-        $.support.transition && this.$element.hasClass('fade') ?
+        $.support.transition && this.$element.hasClass('sr-fade') ?
           this.hideWithTransition() :
-          this.hideModal()
+          this.hideSRModal()
       }
 
     , enforceFocus: function () {
         var that = this
-        $(document).on('focusin.modal', function (e) {
+        $(document).on('focusin.SRmodal', function (e) {
           if (that.$element[0] !== e.target && !that.$element.has(e.target).length) {
             that.$element.focus()
           }
@@ -889,11 +889,11 @@
     , escape: function () {
         var that = this
         if (this.isShown && this.options.keyboard) {
-          this.$element.on('keyup.dismiss.modal', function ( e ) {
+          this.$element.on('keyup.dismiss.SRmodal', function ( e ) {
             e.which == 27 && that.hide()
           })
         } else if (!this.isShown) {
-          this.$element.off('keyup.dismiss.modal')
+          this.$element.off('keyup.dismiss.SRmodal')
         }
       }
 
@@ -901,16 +901,16 @@
         var that = this
           , timeout = setTimeout(function () {
               that.$element.off($.support.transition.end)
-              that.hideModal()
+              that.hideSRModal()
             }, 500)
 
         this.$element.one($.support.transition.end, function () {
           clearTimeout(timeout)
-          that.hideModal()
+          that.hideSRModal()
         })
       }
 
-    , hideModal: function (that) {
+    , hideSRModal: function (that) {
         this.$element
           .hide()
           .trigger('hidden')
@@ -925,12 +925,12 @@
 
     , backdrop: function (callback) {
         var that = this
-          , animate = this.$element.hasClass('fade') ? 'fade' : ''
+          , animate = this.$element.hasClass('sr-fade') ? 'sr-fade' : ''
 
         if (this.isShown && this.options.backdrop) {
           var doAnimate = $.support.transition && animate
 
-          this.$backdrop = $('<div class="modal-backdrop ' + animate + '" />')
+          this.$backdrop = $('<div class="sr-modal-backdrop ' + animate + '" />')
             .appendTo(document.body)
 
           this.$backdrop.click(
@@ -941,16 +941,16 @@
 
           if (doAnimate) this.$backdrop[0].offsetWidth // force reflow
 
-          this.$backdrop.addClass('in')
+          this.$backdrop.addClass('sr-in')
 
           doAnimate ?
             this.$backdrop.one($.support.transition.end, callback) :
             callback()
 
         } else if (!this.isShown && this.$backdrop) {
-          this.$backdrop.removeClass('in')
+          this.$backdrop.removeClass('sr-in')
 
-          $.support.transition && this.$element.hasClass('fade')?
+          $.support.transition && this.$element.hasClass('sr-fade')?
             this.$backdrop.one($.support.transition.end, $.proxy(this.removeBackdrop, this)) :
             this.removeBackdrop()
 
@@ -964,33 +964,33 @@
  /* MODAL PLUGIN DEFINITION
   * ======================= */
 
-  var old = $.fn.modal
+  var old = $.fn.SRmodal
 
-  $.fn.modal = function (option) {
+  $.fn.SRmodal = function (option) {
     return this.each(function () {
       var $this = $(this)
-        , data = $this.data('modal')
-        , options = $.extend({}, $.fn.modal.defaults, $this.data(), typeof option == 'object' && option)
-      if (!data) $this.data('modal', (data = new Modal(this, options)))
+        , data = $this.data('SRmodal')
+        , options = $.extend({}, $.fn.SRmodal.defaults, $this.data(), typeof option == 'object' && option)
+      if (!data) $this.data('SRmodal', (data = new SRModal(this, options)))
       if (typeof option == 'string') data[option]()
       else if (options.show) data.show()
     })
   }
 
-  $.fn.modal.defaults = {
+  $.fn.SRmodal.defaults = {
       backdrop: true
     , keyboard: true
     , show: true
   }
 
-  $.fn.modal.Constructor = Modal
+  $.fn.SRmodal.Constructor = SRModal
 
 
  /* MODAL NO CONFLICT
   * ================= */
 
-  $.fn.modal.noConflict = function () {
-    $.fn.modal = old
+  $.fn.SRmodal.noConflict = function () {
+    $.fn.SRmodal = old
     return this
   }
 
@@ -998,16 +998,16 @@
  /* MODAL DATA-API
   * ============== */
 
-  $(document).on('click.modal.data-api', '[data-toggle="modal"]', function (e) {
+  $(document).on('click.SRmodal.data-api', '[data-toggle="SRmodal"]', function (e) {
     var $this = $(this)
       , href = $this.attr('href')
       , $target = $($this.attr('data-target') || (href && href.replace(/.*(?=#[^\s]+$)/, ''))) //strip for ie7
-      , option = $target.data('modal') ? 'toggle' : $.extend({ remote:!/#/.test(href) && href }, $target.data(), $this.data())
+      , option = $target.data('SRmodal') ? 'toggle' : $.extend({ remote:!/#/.test(href) && href }, $target.data(), $this.data())
 
     e.preventDefault()
 
     $target
-      .modal(option)
+      .SRmodal(option)
       .one('hide', function () {
         $this.focus()
       })
@@ -1093,9 +1093,9 @@
       if (!self.options.delay || !self.options.delay.show) return self.show()
 
       clearTimeout(this.timeout)
-      self.hoverState = 'in'
+      self.hoverState = 'sr-in'
       this.timeout = setTimeout(function() {
-        if (self.hoverState == 'in') self.show()
+        if (self.hoverState == 'sr-in') self.show()
       }, self.options.delay.show)
     }
 
@@ -1125,7 +1125,7 @@
         this.setContent()
 
         if (this.options.animation) {
-          $tip.addClass('fade')
+          $tip.addClass('sr-fade')
         }
 
         placement = typeof this.options.placement == 'function' ?
@@ -1162,7 +1162,7 @@
         $tip
           .offset(tp)
           .addClass(placement)
-          .addClass('in')
+          .addClass('sr-in')
       }
     }
 
@@ -1178,7 +1178,7 @@
       var that = this
         , $tip = this.tip()
 
-      $tip.removeClass('in')
+      $tip.removeClass('sr-in')
 
       function removeWithAnimation() {
         var timeout = setTimeout(function () {
@@ -1191,7 +1191,7 @@
         })
       }
 
-      $.support.transition && this.$tip.hasClass('fade') ?
+      $.support.transition && this.$tip.hasClass('sr-fade') ?
         removeWithAnimation() :
         $tip.detach()
 
@@ -1253,7 +1253,7 @@
 
   , toggle: function (e) {
       var self = $(e.currentTarget)[this.type](this._options).data(this.type)
-      self[self.tip().hasClass('in') ? 'hide' : 'show']()
+      self[self.tip().hasClass('sr-in') ? 'hide' : 'show']()
     }
 
   , destroy: function () {
@@ -1650,7 +1650,7 @@
       var $active = container.find('> .active')
         , transition = callback
             && $.support.transition
-            && $active.hasClass('fade')
+            && $active.hasClass('sr-fade')
 
       function next() {
         $active
@@ -1662,9 +1662,9 @@
 
         if (transition) {
           element[0].offsetWidth // reflow for transition
-          element.addClass('in')
+          element.addClass('sr-in')
         } else {
-          element.removeClass('fade')
+          element.removeClass('sr-fade')
         }
 
         if ( element.parent('.dropdown-menu') ) {
@@ -1678,7 +1678,7 @@
         $active.one($.support.transition.end, next) :
         next()
 
-      $active.removeClass('in')
+      $active.removeClass('sr-in')
     }
   }
 
