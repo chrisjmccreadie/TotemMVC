@@ -43,6 +43,8 @@
                        
 
                           <li><a href="shop">Shop</a></li>
+                                                      <li><a href="hostedshop">Hosted Shop</a></li>
+
                           <li><a href="#">Booking </a></li>
 
                           <li><a href="#">Collection</a></li>

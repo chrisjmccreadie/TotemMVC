@@ -43,6 +43,8 @@
                        
 
                           <li><a href="shop">Shop</a></li>
+                                                      <li><a href="hostedshop">Hosted Shop</a></li>
+
                           <li><a href="#">Booking </a></li>
 
                           <li><a href="#">Collection</a></li>
@@ -69,7 +71,11 @@
     	  <button class="btn btn-success btn-large pull-rightdropdown-toggle" id='sr_createsession'><i class="icon-white icon-star"></i> Create a seesoin</button>
     	  <button class="btn btn-success btn-large pull-rightdropdown-toggle" id='sr_fetchallproducts'><i class="icon-white icon-star"></i> Fetch All Products</button>
     	 -->
-<div class="product">
+    	 
+    	 
+<div id='sr-productlist'>
+</div>
+<div class="product hide">
 		<div class="productimage">
 			<img src="http://d1y7fugidfyvfy.cloudfront.net/api/file/E4E6y6jJQvaDPOKY27u3/convert?h=100&amp;w=100&amp;fit=max&amp;quality=50">
 		</div>
@@ -109,7 +115,7 @@
 <input type="hidden" name="sr-companyid" id="sr-companyid" value="11">
 <!-- these vars are optional and allow you to contol the configuration of shop rocket from your own site, pretty cool no?
 <!-- check if we need to rescane the whole page for products-->
-<input type="hidden" name="sr-scanpage" id="sr-scanpage" value="0">
+<input type="hidden" name="sr-scanpage" id="sr-scanpage" value="1">
 <!-- dynamic price, check with Shop rocket for latest price -->
 <input type="hidden" name="sr-dynamicprice" id="sr-dynamicprice" value="1">
 <!-- currency symbole, set your currency symbol -->
