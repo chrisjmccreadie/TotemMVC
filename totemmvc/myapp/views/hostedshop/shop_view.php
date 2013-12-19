@@ -107,7 +107,6 @@
 
 <!-- company id -->
 <input type="hidden" name="sr-companyid" id="sr-companyid" value="11">
-
 <!-- these vars are optional and allow you to contol the configuration of shop rocket from your own site, pretty cool no?
 <!-- check if we need to rescane the whole page for products-->
 <input type="hidden" name="sr-scanpage" id="sr-scanpage" value="0">
@@ -118,7 +117,7 @@
 <!-- base shipping price, set the basic shipping paice -->
 <input type="hidden" name="sr-shipping" id="sr-shiping" value="1">
 <!-- check stock flag, chekc if item is in stock or not. -->
-<input type="hidden" name="sr-checkstock" id="sr-checkstock" value="0">
+<input type="hidden" name="sr-checkstock" id="sr-checkstock" value="1">
 <!-- Out of stock message. -->
 <input type="hidden" name="sr-outofstockmessage" id="sr-outofstockmessage" value="We are sorry to say we are out of stock.">
 <!-- if we are going to log stats or not default = 1 -->
