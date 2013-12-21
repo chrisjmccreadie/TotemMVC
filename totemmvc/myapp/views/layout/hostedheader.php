@@ -6,7 +6,11 @@
 <meta name="viewport" content="width=device-width" />
 <title>Totem MVC</title>
 <link href="<?php echo $resourceurl;?>css/style.css" type="text/css" rel="stylesheet"  />
-<link href="<?php echo $resourceurl;?>css/sr.css" type="text/css" rel="stylesheet"  />
+<!-- stage http://shoprocketstaging.eu01.aws.af.cm/static/frontend/css/
+	local :http://shoprocket:8888//static/frontend/css/
+	
+-->
+<link href="http://shoprocket:8888/static/frontend/css/sr.css" type="text/css" rel="stylesheet"  />
 <script src="<?php echo $resourceurl;?>js/jquery-1.9.1.js"></script>
 <!----- bootstrap css start ----->
 <link href="<?php echo $resourceurl;?>css/bootstrap.css" rel="stylesheet" type="text/css" />
