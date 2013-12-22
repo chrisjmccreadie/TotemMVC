@@ -9,8 +9,9 @@
 <!-- stage http://shoprocketstaging.eu01.aws.af.cm/static/frontend/css/
 	local :http://shoprocket:8888//static/frontend/css/
 	
+
+<link href="http://shoprocketstaging.eu01.aws.af.cm/static/frontend/css/sr.css" type="text/css" rel="stylesheet"  />
 -->
-<link href="http://shoprocket:8888/static/frontend/css/sr.css" type="text/css" rel="stylesheet"  />
 <script src="<?php echo $resourceurl;?>js/jquery-1.9.1.js"></script>
 <!----- bootstrap css start ----->
 <link href="<?php echo $resourceurl;?>css/bootstrap.css" rel="stylesheet" type="text/css" />
