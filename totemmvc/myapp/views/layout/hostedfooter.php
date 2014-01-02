@@ -16,8 +16,11 @@
 <!-- stage http://shoprocketstaging.eu01.aws.af.cm/
 	local :http://shoprocket:8888/
 	
--->
 <script language="javascript" src="http://shoprocketstaging.eu01.aws.af.cm/static/frontend/js/sr.js"></script>
+
+-->
+
+<script language="javascript" src="http://shoprocket:8888/static/frontend/js/sr.js"></script>
 
 </body>
 </html>

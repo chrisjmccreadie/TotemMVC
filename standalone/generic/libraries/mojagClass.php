@@ -19,7 +19,7 @@ mojagClass extends mojagCache
 {
 	
 	var $url='';
-	var $useurl='http://www.mojag.co/index.php/rest/rest/';  //the url to use.
+	var $useurl='http://mojag.co/index.php/rest/rest/';  //the url to use.
 	//alternative mojag servers
 	//var $useurl='http://mojaguseast.aws.af.cm/rest/rest/';  //the url to use.
 	//var $useurl='http://mojag3.gopagoda.com';  //the url to use.
@@ -33,7 +33,7 @@ mojagClass extends mojagCache
 	
     function __construct() {
     	//set the urls that we will cycle through.
-		$this->url[]='http://www.mojag.co/index.php/rest/rest/';
+		$this->url[]='http://mojag.co/index.php/rest/rest/';
 	 	$this->url[]= 'http://localhost:8888/mojag/index.php/rest/rest/';
 		//$this->workingurl();
 		
@@ -54,6 +54,17 @@ mojagClass extends mojagCache
 			$this->debug=1;
 		}
     }
+	
+		  /*
+	  * Social functions
+	  */
+	  
+	  function getTweets($siteid)
+	  {
+		$url = "tweets/?id=$siteid";
+		$tweets = $this->fetchPage($url);	 
+		return($tweets); 	
+	  }
 	
 	
 	//tell the user the current versiom

@@ -66,14 +66,19 @@
   <div class="container">
 
     <div class="span12">
+    	<div>
+    	<span class='sr-confirm-amount'></span>
+     	<span class='sr-num-amount'></span>   	
+    	
     	<button class="btn btn-success btn pull-rightdropdown-toggle" id='sr-basket-button'><i class="icon-white icon-star"></i>View Basket</button>
+    	</div>
     	 <!--
     	  <button class="btn btn-success btn-large pull-rightdropdown-toggle" id='sr_createsession'><i class="icon-white icon-star"></i> Create a seesoin</button>
     	  <button class="btn btn-success btn-large pull-rightdropdown-toggle" id='sr_fetchallproducts'><i class="icon-white icon-star"></i> Fetch All Products</button>
     	 -->
     	 
     	 
-<div id='sr-productlist'>
+<div id='sr-productlist' sr-meta="accessories" sr-show-max='1' sr-pagination='0'>
 </div>
 <div class="product hide">
 		<div class="productimage">
@@ -112,7 +117,7 @@
 <!-- Shop rocket variables -->
 
 <!-- company id -->
-<input type="hidden" name="sr-companyid" id="sr-companyid" value="11">
+<input type="hidden" name="sr-companyid" id="sr-companyid" value="101">
 <!-- these vars are optional and allow you to contol the configuration of shop rocket from your own site, pretty cool no?
 <!-- check if we need to rescane the whole page for products-->
 <input type="hidden" name="sr-scanpage" id="sr-scanpage" value="1">
@@ -128,3 +133,5 @@
 <input type="hidden" name="sr-outofstockmessage" id="sr-outofstockmessage" value="We are sorry to say we are out of stock.">
 <!-- if we are going to log stats or not default = 1 -->
 <input type="hidden" name="sr-stats" id="sr-stats" value="1">
+<!-- turn on debugging -->
+<input type="hidden" name="sr-debug" id="sr-debug" value="1">
