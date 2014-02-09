@@ -135,7 +135,7 @@ class mojagcache {
 	            return FALSE;
 	        }
 			//lock it
-	        if (flock($fp, LOCK_EX) && $data!=null && $data!='')
+	        if (flock($fp, LOCK_EX) && $data!=null && $data!='')   // if its an empty response wont do anything
 	        {
 	        	//set a cahce time and add it to the object, we could use file time it was created as well.
 	        	//$data->mojagcachetime = time();	
