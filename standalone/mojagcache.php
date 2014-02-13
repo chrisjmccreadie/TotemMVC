@@ -26,22 +26,13 @@
  * 
  */
 
-class mojagCache {
+class mojagcache {
 	
 	//the live url checker
 	var $checkurls = array("url" =>'http://www.mojag.co/index.php/rest/rest/checkliveserver/');
 	var $dir = 'd';
 	//expiration time.
 	var $expiration = 3600;  // 1 hour
-   
-    function __construct()
-    {
-    	//set the cache dir.
-        $this->dir = $_SERVER['DOCUMENT_ROOT'].'/mojagclass/cache';
-		//print_r($this->dir);
-		//exit;    
-	}
-	
 
 	//set the name.
     private function _name($key)
@@ -56,13 +47,12 @@ class mojagCache {
       	//check the dir exists and is writeable.
         if ( !is_dir($this->dir) )
         {
- 
-            return FALSE;
+
         }
 		
 		if ( !is_writable($this->dir) )
         {
-        	//echo "not writeable:".$this->dir.'<br/>';
+        	echo "not writeable:".$this->dir.'<br/>';
             return FALSE;
         }
 	
@@ -70,15 +60,17 @@ class mojagCache {
 
 		//set the cache path
         $cache_path = $this->_name($key);
+
 		//return false if it does not exist
         if (!@file_exists($cache_path))
         {
             return FALSE;
+
         }
 		
 		//check if we are using an expiry, it defaults to never expire the content
 		if ($exipre == 1)
-		{
+		{ 
 			//the cached file is older than the expiry time
 			 if (filemtime($cache_path) < (time() - $this->expiration))
        		 {
@@ -89,7 +81,7 @@ class mojagCache {
         	}			
 		}
 
-
+        
 		//open the file.
         if (!$fp = @fopen($cache_path, 'rb'))
         {
@@ -97,7 +89,6 @@ class mojagCache {
         }
 		//lock it.
         flock($fp, LOCK_SH);
-		
         $cache = '';
 		//read it
         if (filesize($cache_path) > 0)
@@ -124,7 +115,17 @@ class mojagCache {
     		//check we can write the data
  	   		if ( !is_dir($this->dir) OR !is_writable($this->dir))
 	        {
-	            return FALSE;
+	            
+           if (!@mkdir($this->dir,0777, true)) {    // if wont exists create one.
+           	if($this->debug == 1 )
+            
+            echo "Mojag tried to create a directory for you, But looks like you dont have enough permission.";
+
+            }
+            else {
+            	return false;
+            }
+
 	        }
 			//set the cache path
 	        $cache_path = $this->_name($key);
@@ -134,7 +135,7 @@ class mojagCache {
 	            return FALSE;
 	        }
 			//lock it
-	        if (flock($fp, LOCK_EX))
+	        if (flock($fp, LOCK_EX) && $data!=null && $data!='')   // if its an empty response wont do anything
 	        {
 	        	//set a cahce time and add it to the object, we could use file time it was created as well.
 	        	//$data->mojagcachetime = time();	

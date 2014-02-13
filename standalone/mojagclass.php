@@ -13,9 +13,9 @@
  * 
  */
 //error_reporting(E_ALL);
- require_once('mojagCache.php');
+require_once('mojagcache.php');
  
-mojagClass extends mojagCache
+class mojagclass extends mojagcache
 {
 	
 	var $url='';
@@ -26,7 +26,7 @@ mojagClass extends mojagCache
 	var $draft = 0;  //hold the draft state
 	var $version = '1.1';	 // Hold the version of the Mojag Class we may need to update this at some point.
 	var $cacheit = 1; //set if you want to use intellgent caching.
-	var $debug = 0; //set the debug var
+	var $debug = 1; //set the debug var
 		
 	//var $useurl='http://localhost:8888/mojag/index.php/rest/rest/';
 	
@@ -198,10 +198,11 @@ mojagClass extends mojagCache
 			//echo 'cache';
 			//echo $cacheurl;
 			$cachedata = $this->get($cacheurl);
+			
 			if ($this->debug == 1)
 			{
 				//echo "Data from Cache<br/>";
-				///print_r($cachedata);
+				
 				//echo "End data from Cache<br/>";
 			}
 			//print_r($this->dir);
