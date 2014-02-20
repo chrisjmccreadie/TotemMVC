@@ -13,9 +13,9 @@
  * 
  */
 //error_reporting(E_ALL);
- require_once('mojagCache.php');
+ require_once('mojagcache.php');
  
-mojagClass extends mojagCache
+class mojagclass extends mojagcache
 {
 	
 	var $url='';
@@ -342,6 +342,64 @@ mojagClass extends mojagCache
 	}
 		 * */
 		 
+	function formatContent($html, $width=null, $height=null, $fit=null, $id=null, $style=null) {
+	 	if($html==null || $html == ''){
+	 		return $html;
+	 	}
+	 	else {
+        $doc = new DOMDocument();
+        @$doc->loadHTML($html);
+        $imageTags = $doc->getElementsByTagName('img');
+         foreach($imageTags as $tag) {
+          $presrc =  $tag->getAttribute('src');
+          if(stripos($presrc, 'convert')!=true) {
+          $newsrc = $presrc;
+          	if($width) {
+          		$newsrc.= "/convert/?w=$width";
+          	}
+          	if($height) {
+          		$newsrc.= "&h=$height";
+          	}
+          	if($fit) {
+          		$newsrc.= "&fit=$fit";
+          	}
+           $html = str_replace($presrc, $newsrc, $html);
+        }
+        } 
+     }
+        return $html;
+    }
+		 
+		 
+	function formatContent($html, $width=null, $height=null, $fit=null, $id=null, $style=null) {
+	 	if($html==null || $html == ''){
+	 		return $html;
+	 	}
+	 	else {
+        $doc = new DOMDocument();
+        @$doc->loadHTML($html);
+        $imageTags = $doc->getElementsByTagName('img');
+         foreach($imageTags as $tag) {
+          $presrc =  $tag->getAttribute('src');
+          if(stripos($presrc, 'convert')!=true) {
+          $newsrc = $presrc;
+          	if($width) {
+          		$newsrc.= "/convert/?w=$width";
+          	}
+          	if($height) {
+          		$newsrc.= "&h=$height";
+          	}
+          	if($fit) {
+          		$newsrc.= "&fit=$fit";
+          	}
+           $html = str_replace($presrc, $newsrc, $html);
+        }
+        } 
+     }
+        return $html;
+    }
+	
+		 
 	function searchContent($search,$pagecontent,$default='')
 	{
 
@@ -588,12 +646,16 @@ mojagClass extends mojagCache
 		return $menu;	 	
 	 }
 	 
-	 function getMenu($siteid,$class='navigation',$active='',$target='_self')
+	 function getMenu($siteid,$class='navigation',$active='',$target='_self',$linkedpages = '0')
 	 {
 		//get the menu using the site id
 		//update
-		
-		$url = "menu/?id=$siteid";
+		if ($linkedpages == 1)
+			$url = "menu/?id=$siteid&linked=1";
+		else {
+			$url = "menu/?id=$siteid";
+			
+		}
 		$menu = $this->fetchPage($url);
 		//echo 'data'.print_r($data);
 		//echo $data;
