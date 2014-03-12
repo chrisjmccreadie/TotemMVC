@@ -15,7 +15,7 @@
 //error_reporting(E_ALL);
  require_once('mojagcache.php');
  
-mojagClass extends mojagCache
+mojagclass extends mojagcache
 {
 	
 var $url='';
