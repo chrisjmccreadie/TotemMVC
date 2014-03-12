@@ -11,8 +11,8 @@
  * 
  * 
  */
+ 
 class Mojagcartajax extends CI_Controller
-class Cart_Controller extends TinyMVC_Controller
 {
 	
 	/*
