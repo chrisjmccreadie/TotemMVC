@@ -15,7 +15,7 @@
  * Based othe JGCache class which can be found here
  * 
  * 	http://www.jongales.com/blog/2009/02/18/simple-file-based-php-cache-class/
-mojagClass extends mojagCache
+mojagClass extends mojagcache
  * TODO: add memcachier support.
  * 
  * Memcachier.
