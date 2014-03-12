@@ -26,10 +26,10 @@ mojagClass extends mojagCache
  * 
  */
  error_reporting(E_ALL);
- require_once('mojagcache.php');
+ require_once('mojagCache.php');
  
 
-class tinymvc_library_mojagcart extends mojagcache {
+class tinymvc_library_mojagcart extends mojagCache {
 	
 	//the live url checker
 	var $useurl='http://www.mojagcart.com/index.php?/rest/';  //the url to use.

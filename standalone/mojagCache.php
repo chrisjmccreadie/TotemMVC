@@ -26,7 +26,7 @@
  * 
  */
 
-class mojagCache {
+class mojagcache {
 	
 	//the live url checker
 	var $checkurls = array("url" =>'http://www.mojag.co/index.php/rest/rest/checkliveserver/');

@@ -13,18 +13,19 @@
  * 
  */
 //error_reporting(E_ALL);
- require_once('mojagCache.php');
+ require_once('mojagcache.php');
  
-class tinymvc_library_mojagclass extends mojagCache 
+class tinymvc_library_mojagclass extends mojagcache 
 {
 	
-	var $url='';
-	var $useurl='http://mojag.co/index.php/rest/rest/';  //the url to use.
+var $url='';
+	//mojag-env-2ffptqss5c.elasticbeanstalk.com
+	var $useurl='http://mojag-env-2ffptqss5c.elasticbeanstalk.com/index.php/rest/rest/';  //the url to use.
 	//alternative mojag servers
 	//var $useurl='http://mojaguseast.aws.af.cm/rest/rest/';  //the url to use.
 	//var $useurl='http://mojag3.gopagoda.com';  //the url to use.
 	var $draft = 0;  //hold the draft state
-	var $version = '1.1';	 // Hold the version of the Mojag Class we may need to update this at some point.
+	var $version = '1.2';	 // Hold the version of the Mojag Class we may need to update this at some point.
 	var $cacheit = 1; //set if you want to use intellgent caching.
 	var $debug = 0; //set the debug var
 		
@@ -46,7 +47,7 @@ class tinymvc_library_mojagclass extends mojagCache
 		//constructor will not be fired in mojagcache so we need to set it here.
 		if ($this->cacheit = 1)
 		{
-			$this->dir =  $_SERVER['DOCUMENT_ROOT'].'/totemmvc/myapp/plugins/cache';
+			$this->dir =  $_SERVER['DOCUMENT_ROOT'].'/application/cache';
 		}
 		
 		if (isset($_GET['debug']))
@@ -105,36 +106,84 @@ class tinymvc_library_mojagclass extends mojagCache
 		$db->exec('CREATE TABLE foo (bar STRING)');
 		$db->exec("INSERT INTO foo (bar) VALUES ('This is a test')");
 		$result = $db->query('SELECT bar FROM foo');
-		var_dump($result->fetchArray());
+	 }
+	 
+	 function extractImageSrc($data,$useattribuate,$width=0,$height =0,$fit='')
+	 {
+	 	//loop through the data
+	 	//echo $useattribuate;
+	 	foreach ($data as $obj)
+		{
+			
+			foreach ($obj->pagedata as $key => $value)
+			{
+				
+				if ($key == $useattribuate)
+				{
+					$doc = new DOMDocument();
+	    			$doc->loadHTML($value);
+	    			$imageTags = $doc->getElementsByTagName('img');
+					foreach($imageTags as $tag) {
+						$src = $tag->getAttribute('src');
+						
+						//echo $src;
+						if(stristr($src, 'http://d1y7fugidfyvfy.cloudfront.net/') === FALSE) {
+							$obj->pagedata->mojagimgssrc =  $src;	
+						}
+						else
+						{
+							$src = $src.'/convert?';
+							if ($width != 0)
+							{
+								$src = $src.'w='.$width.'&h='.$height;
+							}
+							if ($fit != '')
+							{
+								$src = $src.'&fit='.$fit;
+							}
+							$obj->pagedata->mojagimgssrc =  $src;	
+						}			
+					//exit;
+	        			//echo $src;
+					}
+				}
+			}
+			
+		}
+		//exit;
+		return($data);
+		//exit;
 	 }
 	
 	 function getAttributes($type,$object)
 	 {
 	 	//echo $object;
-	 
-	 	if ($type == 'image')
-		{
+	 	
 			
-			$doc = new DOMDocument();
-    		$doc->loadHTML($object);
-    		$imageTags = $doc->getElementsByTagName('img');
-
-    		foreach($imageTags as $tag) {
-        		//return($tag->getAttribute('src'));
-    			$pic[]=array("src"=>$tag->getAttribute('src'));
+		 	if ($type == 'image')
+			{
+				
+				$doc = new DOMDocument();
+	    		$doc->loadHTML($object);
+	    		$imageTags = $doc->getElementsByTagName('img');
+	
+	    		foreach($imageTags as $tag) {
+	        		//return($tag->getAttribute('src'));
+	    			$pic[]=array("src"=>$tag->getAttribute('src'));
+				}
+				
+				//print_r($pic);
+				//exit;
+				return($pic);
+				}
+			if ($type == 'href')
+			{
+				$tmp = explode('href="',$object);
+				$tmp2 = explode('">',$tmp[1]);
+				return($tmp2[0]);
+				
 			}
-			
-			//print_r($pic);
-			//exit;
-			return($pic);
-			}
-		if ($type == 'href')
-		{
-			$tmp = explode('href="',$object);
-			$tmp2 = explode('">',$tmp[1]);
-			return($tmp2[0]);
-			
-		}
+	
 	 }
 	
 	/*
@@ -163,6 +212,40 @@ class tinymvc_library_mojagclass extends mojagCache
 		//print_r($str);
 		//exit;
 	}
+
+	/* This method format the images resize / scale them using mojag GD API.
+	    $html = Raw html, $width = width, $height = height
+	    @returns String parsed HTML 
+	 */ 
+
+	 function formatContent($html, $width=null, $height=null, $fit=null, $id=null, $style=null) {
+	 	if($html==null || $html == ''){
+	 		return $html;
+	 	}
+	 	else {
+        $doc = new DOMDocument();
+        @$doc->loadHTML($html);
+        $imageTags = $doc->getElementsByTagName('img');
+         foreach($imageTags as $tag) {
+          $presrc =  $tag->getAttribute('src');
+          if(stripos($presrc, 'convert')!=true) {
+          $newsrc = $presrc;
+          	if($width) {
+          		$newsrc.= "/convert/?w=$width";
+          	}
+          	if($height) {
+          		$newsrc.= "&h=$height";
+          	}
+          	if($fit) {
+          		$newsrc.= "&fit=$fit";
+          	}
+           $html = str_replace($presrc, $newsrc, $html);
+        }
+        } 
+    }
+        return $html;
+    }
+	 
 	
 
 	
@@ -170,6 +253,8 @@ class tinymvc_library_mojagclass extends mojagCache
 	//this function fetches the page.
 	function fetchPage($url)
 	{
+		//echo $url;
+		//exit;
 		//if its a heartbeast set the timeout to one second
 		if ($url == "ping/")
 			$opts = array(  'http' => array( 'timeout' => 1   ) ) ;
@@ -492,11 +577,11 @@ class tinymvc_library_mojagclass extends mojagCache
 	 
 	 
 	 
-	 function getKeyword($siteid,$keywords)
+	 function getKeyword($siteid,$keywords,$orderby='sortorder',$ascdesc='ASC')
 	 {
 		//This function get the objects which match the keywords.
 		
-		$url = "meta/?id=$siteid&keywords=$keywords";
+		$url = "meta/?id=$siteid&keywords=$keywords&orderby=$orderby&ascdesc=$ascdesc";
 
 		$meta = $this->fetchPage($url);
 		//echo 'meta';
@@ -581,26 +666,38 @@ class tinymvc_library_mojagclass extends mojagCache
 	 }
 	 
 	 
-	 function getRawMenu($siteid)
+	  function getRawMenu($siteid,$linkedpages = '0')
 	 {
-		$url = "menu/?id=$siteid";
+	 	if ($linkedpages == 1)
+			$url = "menu/?id=$siteid&linked=1";
+		else {
+			$url = "menu/?id=$siteid";
+			
+		}
+		
 		$menu = $this->fetchPage($url);
 		return $menu;	 	
 	 }
 	 
-	 function getMenu($siteid,$class='navigation',$active='',$target='_self')
+
+	 
+	 function getMenu($siteid, $class='navigation',$active='',$target='_self', $linkedpages = 0,$useurl=0,$parenturl='')
 	 {
 		//get the menu using the site id
 		//update
-		
-		$url = "menu/?id=$siteid";
+		if ($linkedpages == 1)
+			$url = "menu/?id=$siteid&linked=1";
+		else {
+			$url = "menu/?id=$siteid";
+			
+		}
 		$menu = $this->fetchPage($url);
 		//echo 'data'.print_r($data);
 		//echo $data;
 		//exit;
 		//check it is not a protected domain and if it is return false
 		//to do the above.
-		$menuo ="<ul class=\"$class\">";
+		$menuo ="<ul class=\"sf-menu\">";
 		
 		
 		if ($active == '')
@@ -623,12 +720,48 @@ class tinymvc_library_mojagclass extends mojagCache
 		{
 			if ($name == $item->url)
 			{
-				$menuo = $menuo."<li><a href=\"$item->url\" target=\"$target\" class=\"sel\">$item->outputname</a></li>";
-			
-			}
+				$menuo = $menuo."<li class=\"$class\"><a href=\"/$item->url\" target=\"$target\" class=\"sel\">$item->outputname</a>";
+                if(isset($item->linkedpages) && $item->linkedpages!=null) {
+                	foreach($item->linkedpages as $key => $linked) {
+                		if($key == 0)
+                			$menuo.="<ul  class=\"sub-menu\">";
+						
+						if ($useurl == 0)
+                			$menuo.="<li  class=\"$class\"><a href=\"/$item->url\" target=\"$target\" class=\"sel\">$linked->outputname</a></li>";
+						else
+						{
+                			$menuo.="<li  class=\"$class\"><a href=\"/$linked->outputname\" target=\"$target\" class=\"sel\">$linked->outputname</a></li>";
+							
+						}
+                }
+                $menuo.= "</ul></li>";
+            }
+               else {
+                	$menuo.= "</li>";
+                	}
+         }
 			else	
 			{
-				$menuo = $menuo."<li><a href=\"$item->url\" target=\"$target\" id=\"\">$item->outputname</a></li>";
+				$menuo = $menuo."<li  class=\"$class\"><a href=\"/$item->url\" target=\"$target\" id=\"\">$item->outputname</a>";
+				if(isset($item->linkedpages) && $item->linkedpages!=null) {
+                	foreach($item->linkedpages as $key => $linked) {
+                	if($key == 0)
+                		$menuo.="<ul  class=\"sub-menu\">";
+					$on = str_replace(' ','-',$linked->outputname);
+					$pon = str_replace(' ','-',$item->outputname);
+					$pon = strtolower($pon);
+					if ($useurl == 0)
+                		$menuo.="<li  class=\"$class\"><a href=\"/$item->url\" target=\"$target\" class=\"sel\">$linked->outputname</a></li>";
+					else {
+                		$menuo.="<li  class=\"$class\"><a href=\"/$pon$parenturl$on\" target=\"$target\" class=\"sel\">$linked->outputname</a></li>";
+						
+					}
+                }
+                $menuo.= "</ul></li>";
+            }
+                else {
+                	$menuo.= "</li>";
+                	}
 			}
 		}
 		$menuo = $menuo."</ul>";
@@ -644,19 +777,25 @@ class tinymvc_library_mojagclass extends mojagCache
 		{
 			$url = $_SERVER["PATH_INFO"];
 			$url2 = explode('/',$url);
-			$url3 = $url2[count($url2)-$counter];
+			$url2 = str_replace('-',' ',$url2);
+			$url3 = urlencode($url2[count($url2)-$counter]);
 			
 		}
 		else
 		{
-			$url3 = $outputname;
+			$url3 = urlencode($outputname);
 		}
-		
 		$url = "pageoutputname?id=$siteid&on=$url3";
+		//echo $url;
+		//exit;
 		$data = $this->fetchPage($url);
-		$datafin['pagedata'] = $data[0]->pagedata;
-		$datafin['draftdata'] = $data[0]->draftdata;	
-		$datafin['user'] = $data[0]->user;
+		$datafin->pagedata = $data[0]->pagedata;
+		$datafin->draftdata = $data[0]->draftdata;	
+		$datafin->user = $data[0]->user;
+		//$datafin = (object) $datafin;
+		
+		//print_r($datafin);
+		//exit;
 		return($datafin);
 	}
 	
@@ -670,6 +809,17 @@ class tinymvc_library_mojagclass extends mojagCache
 		//exit;
 		//echo 'end';
 		return($page);
+	}
+	
+	function getPageBySlug($siteid,$slug)
+	{
+		$url = "pagebyslug/?siteid=$siteid&slug=$slug";
+		$page = $this->fetchPage($url);
+		//echo 'meta';
+		//print_r($page);
+		//exit;
+		//echo 'end';
+		return($page);		
 	}
 	
 
