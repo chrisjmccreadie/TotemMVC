@@ -120,6 +120,8 @@ class TinyMVC_Controller
 
 	//load the header
 	$output = $this->view->fetch($header);
+	//menu
+	$output = $output. $this->view->fetch('layout/menu');
 	//load the content templates
 	$output = $output.$this->view->fetch($template);
 	//load the footer

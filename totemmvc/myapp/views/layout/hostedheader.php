@@ -21,6 +21,7 @@
 <!----- bootstrap js start ----->
 <!--<script type="text/javascript" src="js/jquery.js"></script>-->
 <script language="javascript" src="<?php echo $resourceurl;?>js/sr-bootstrap.js"></script>
+<script language="javascript" src="<?php echo $resourceurl;?>js/bootstrap.min.js"></script>
 
 
 
