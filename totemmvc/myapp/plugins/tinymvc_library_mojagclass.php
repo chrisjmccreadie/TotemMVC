@@ -335,7 +335,15 @@ var $url='';
 				if ($this->debug == 1)
 				{
 					echo 'not server from cache';
-				}				
+				}	
+				
+				//check if its draft and if it is replace page data
+				if ( isset($_GET['draft']))
+				{
+					if (isset( $data->draftdata))
+						$data->pagedata = $data->draftdata;
+					
+				}			
 			} 
 			else
 			{
@@ -530,6 +538,16 @@ var $url='';
 
 		//print_r($pageseo);
 	 }
+	 
+	 	function fetchChildPagesByParentId($pageid)
+	{
+		
+		$url = "childpages?id=$pageid";
+		$seo = $this->fetchPage($url);
+			//exit;
+		return($seo);
+	}
+	 
 	 
 	 
 	 function fecthSeo($pageid)

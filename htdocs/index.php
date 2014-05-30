@@ -2,7 +2,7 @@
 
 
 /* PHP error reporting level, if different from default */
-error_reporting(E_ALL);
+error_reporting(0);
 
 /* if the /tinymvc/ dir is not up one directory, uncomment and set here */
 //define('TMVC_BASEDIR','../tinymvc/');

@@ -1,4 +1,5 @@
-#Totem MVC ht access, all the goodies in are in here.
+
+
 RewriteEngine On
 
 # Map http://www.example.com to /htdocs.
