@@ -337,8 +337,7 @@ var $url='';
 					echo 'not server from cache';
 				}	
 				
-				
-								//check if its draft and if it is replace page data
+				//check if its draft and if it is replace page data
 				if ( isset($_GET['draft']))
 				{
 					if (isset( $data->draftdata))
