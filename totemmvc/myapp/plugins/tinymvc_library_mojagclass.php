@@ -20,12 +20,12 @@ class tinymvc_library_mojagclass extends mojagcache
 	
 var $url='';
 	//mojag-env-2ffptqss5c.elasticbeanstalk.com
-	var $useurl='http://mojag-env-2ffptqss5c.elasticbeanstalk.com/index.php/rest/rest/';  //the url to use.
+	var $useurl='http://rest.mojag.co/rest/rest/';  //the url to use.
 	//alternative mojag servers
 	//var $useurl='http://mojaguseast.aws.af.cm/rest/rest/';  //the url to use.
 	//var $useurl='http://mojag3.gopagoda.com';  //the url to use.
 	var $draft = 0;  //hold the draft state
-	var $version = '1.2';	 // Hold the version of the Mojag Class we may need to update this at some point.
+	var $version = '1.3';	 // Hold the version of the Mojag Class we may need to update this at some point.
 	var $cacheit = 1; //set if you want to use intellgent caching.
 	var $debug = 0; //set the debug var
 		
@@ -56,6 +56,103 @@ var $url='';
 		}
     }
 	
+	
+	/*
+	 * 
+	 * start of login functiona
+	 * 
+	 * 
+	 */
+	 
+	 
+	 function getLoginSession($streamid,$code,$force=0)
+	 {
+	 	$url = $this->useurl."loginCreateSession/?code=$code&streamid=$streamid&force=$force";
+		//echo "the url:".$url;
+		//exit;
+		$ses = file_get_contents($url);	 
+		$ses = json_decode($ses);
+		return($ses->token); 	
+		
+		
+	 }
+
+	 function getUserData($streamid, $email) {
+        $url = $this->useurl."getUserData/?streamid=$streamid&email=$email";
+		//echo "the url:".$url;
+		//exit;
+	  $ses = file_get_contents($url);
+
+	  return $ses;
+
+
+	 }
+	 
+	 function login($token,$username,$password,$streamid)
+	 {
+	 	$url = $this->useurl."loginVerify/?token=$token&username=$username&password=$password&streamid=$streamid";
+	//	echo $url;
+		//exit;
+		//$url = "http://mojag3/index.php/rest/rest/loginVerify/?token=$ses&username=$email&password=$password&streamid=".$tmvc->config['streamid'];
+		$res = file_get_contents($url);
+		//$loggedin = $this->fetchLo($url);	 
+		//echo $url;
+		return $res; 	
+	 	
+	 }
+
+	 function logout($streamid, $token)
+	 {
+	 	$url = $this->useurl."logout/?streamid=$streamid&token=$token";
+		//exit;
+		//$url = "http://mojag3/index.php/rest/rest/loginVerify/?token=$ses&username=$email&password=$password&streamid=".$tmvc->config['streamid'];
+		$res = file_get_contents($url);
+
+		$this->session->session = '';
+		//$loggedin = $this->fetchLo($url);	 
+		//echo $url;
+		return $res; 	
+	 	
+	 }
+
+	 /* Check wether a user is logged in or not
+	     returns bool
+	 */
+
+	 function isLoggedin() {
+
+	 	 if (isset($this->session->session) &&  (!empty($this->session->session)))	{
+	 	 	return false;
+	 	 } else {
+	 	 	return true;
+	 	 }
+
+	 }
+
+	 /*
+	 register method goes here
+	 */
+
+	 function register($streamid, $code, $token, $fields) {
+	 	if(!(is_array($fields))) {
+	 		printf("{\"error\": true, \"message\": \"%s\"}", 'true', 'missing arguments');
+	 		exit(0);
+	 	}
+	 	$fields['streamid'] = $streamid;
+	 	$fields['code'] = $code;
+	 	$fields['token'] = $token;
+	 	$url = $this->useurl."doRegister/?".http_build_query($fields);
+	 	$response = file_get_contents($url);
+	 	return $response;
+	 }	 
+	 
+	 /*
+	 * 
+	 * end of login functiona
+	 * 
+	 * 
+	 */
+	
 		  /*
 	  * Social functions
 	  */
@@ -66,9 +163,35 @@ var $url='';
 		$tweets = $this->fetchPage($url);	 
 		return($tweets); 	
 	  }
+	  
+	  
+	   /*
+		  * 
+		  * start of content block processing
+		  * 
+		  */
+		  
+
+		  
+   		function getContentBlocks($streamid)
+		{
+			$url = "contentblocks/?id=$streamid";
+			$contentblocks = $this->fetchPage($url);	 
+			return($contentblocks); 
+	
+		}		
+		  
+		  /*
+		   * 
+		   * end of content block processing.
+		   * 
+		   * 
+		   */ 
 	
 	
 	//tell the user the current versiom
+
+	
 	function getVersion()
 	{
 		return($this->version);
