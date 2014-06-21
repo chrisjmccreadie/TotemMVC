@@ -1,7 +1,7 @@
 <?php
 //echo 'ddd';
 require_once('simpletest/autorun.php');
-require_once('../standalone/mojagclass.php');
+require_once('/Users/chris/Dropbox/sites/totemmvc/standalone/mojagclass.php');
 
 class testMojagClass extends UnitTestCase {
 	
